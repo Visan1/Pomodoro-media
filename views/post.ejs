@@ -1,0 +1,122 @@
+<!-- >%- include('partials/header') -%> -->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.31.0/dist/full.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="public/css/post.css">
+   <script src="https://cdn.tailwindcss.com"></script>
+  <style> 
+  img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 473px;
+    height: 842px;
+  }
+  </style>
+</head>
+<body>
+<header class = "text-white container mx-auto">
+    <h1 class="mb-4 text-center text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-5xl dark:text-white">Pomodoro Focus</h1>
+      <p class="mb-6 text-center text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Your all-in-one interactive dashboard and study community.</p>
+      <div class="absolute top-0 right-0 mr-10">
+        <p><strong>User Name</strong>: <%= user.userName %></p>
+        <p><strong>Email</strong>: <%= user.email %></p>
+        <a href="/logout" class="col-3 btn btn-primary">Logout</a>
+      </div>
+</header>
+
+
+<div class="container flex justify-center mx-auto">
+  <div class="row justify-center mt-5">
+    <div class="col-6">
+    <h1 class="text-center mb-6 text-center text-lg font-extrabold text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400"><%= post.title%></h2>
+     <div class= "flex content-center">
+      <img class="img-fluid sizer" src="<%= post.image%>" />
+      <a href="#" class="mr-auto h-2/3 block p-6 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <p class="font-normal text-gray-700 dark:text-gray-400 text-center"><%= post.caption %></p>
+      </a>
+    </div>
+      <div class="row justify-between flex w-1/4 ml-10 mt-5">
+        <form
+          class="col-1 ml-10"
+          action="/post/likePost/<%= post.id %>?_method=PUT"
+          method="POST"
+        >
+          <button type="submit" class="btn btn-info text-white" type="submit">Like</button>
+        </form>
+        <%if(post.user == user.id){ %>
+        <form
+          class="col-1 ml-10"
+          action="/post/deletePost/<%= post.id %>?_method=DELETE"
+          method="POST"
+        >
+          <button type="submit" class="btn btn-info text-white" type="submit">Delete Post</button>
+        </form>
+        <h3 class="col-1 ml-10">Likes: <%= post.likes %></h3>
+        <%}%>
+      </div>
+    </div>
+
+    <!-- <div class="col-3 mt-5">
+      <p><%= post.caption %></p>
+    </div> -->
+
+    <div class="mt-5">
+      <h2>Add a comment!</h2>
+      <form action="/comment/createComment/<%=post._id%>"  method="POST">
+        <div class="mb-3">
+            <!--<label for="comment" class="form-label">Comment</label>
+            <input type="text" class="form-control" id="comment" name="comment"> -->
+            <label for="comment" class="form-label block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"></label>
+            <input type ="text" id="comment" name="comment" rows="4" class="form-control block p-2.5 w-1/2 h-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your message..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+      </form>
+    </div>
+    <ul class="">
+      <% for(var i=0; i<comments.length; i++) {%>
+        <%/* <!--get posts from our server db pulling from our controller-->
+                  <!--controller works with view, view doesnt communicate with others--> */%>
+
+        <li class="col-6 justify-content-between mt-5">
+          <%= comments[i].comment%>
+          <%= comments[i].id%>
+
+          
+        <span class="font-bold">LIKES: <%= comments[i].likes %></span>
+        <form class="flex flex-nowrap" action="/comment/likeComment/<%= comments[i]._id%>?_method=PUT" method="POST">
+          <button type="submit" class="flex flex-nowrap btn btn-info text-white" type="submit">Like</button>
+        </form>
+
+          <%if(comments[i].user == user.id){ %>
+            <!--<p class="font-bold"> By <%= user.userName %></p>-->
+            <form
+              action="/comment/deleteComment/<%= comments[i]._id%>?_method=DELETE"
+              method="POST"
+              class="col-3"
+            >
+              <button class="btn btn-primary flex flex-nowrap" type="submit">Delete Comment</button>
+            </form>
+            <%}%>
+      <% } %>
+    </ul>
+    <div class="col-6 mt-5">
+      <a class="btn btn-primary" href="/profile">Return to Profile</a>
+      <a class="btn btn-primary" href="/feed">Return to Feed</a>
+    </div>
+  </div>
+  <script><%console.log(comments[0]) %></script>
+</div>
+
+
+</body>
+
+
+<!--<%- include('partials/footer') -%> -->
+
+
+
