@@ -7,10 +7,15 @@ To build a full stack web application that uses authentication, and to eventuall
 # Optimization
 These are further optimizations I am looking to add or in the middle of implementing when there is time.
 
--Currently aiming to add user names beside their posts
--A better background transition sequence on the Pomodoro timer
--Adding personal Spotify or playists
--Database for users to view their most productive day, and how they set their environment that day
+---
+
+- Currently aiming to add user names beside their posts
+ - A better background transition sequence on the Pomodoro timer
+ - Adding personal Spotify or playists
+ - Database for users to view their most productive day, and how they set their environment that day
+ - Able to post without submitting a photo
+
+---
 
 # Technology Stack
 JavaScript, HTML, CSS, Node.js, MongoDB, Express, Passport, Tailwind
