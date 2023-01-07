@@ -64,11 +64,6 @@ app.use('/todos', todoRoutes)
 
 
 //Server Running
-connectDB().then(() => {
-  app.listen(process.env.PORT, () => {
-    console.log("Server is running, you better catch it!");
-  })
-})
-/*app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, () => {
   console.log("Server is running, you better catch it!");
-});*/
+});
