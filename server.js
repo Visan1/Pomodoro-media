@@ -20,50 +20,50 @@ require("dotenv").config({ path: "./config/.env" });
 require("./config/passport")(passport);
 
 //Connect To Database
-connectDB();
+connectDB().then(() => {
+  //Using EJS for views
+  app.set("view engine", "ejs");
 
-//Using EJS for views
-app.set("view engine", "ejs");
+  //Static Folder
+  app.use(express.static("public"));
+  //app.use('/js', express.static(__dirname + 'public/js'));
 
-//Static Folder
-app.use(express.static("public"));
-//app.use('/js', express.static(__dirname + 'public/js'));
+  //Body Parsing
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
 
-//Body Parsing
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+  //Logging
+  app.use(logger("dev"));
 
-//Logging
-app.use(logger("dev"));
+  //Use forms for put / delete
+  app.use(methodOverride("_method"));
 
-//Use forms for put / delete
-app.use(methodOverride("_method"));
+  // Setup Sessions - stored in MongoDB
+  app.use(
+    session({
+      secret: "keyboard cat",
+      resave: false,
+      saveUninitialized: false,
+      store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    })
+  );
 
-// Setup Sessions - stored in MongoDB
-app.use(
-  session({
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  })
-);
+  // Passport middleware
+  app.use(passport.initialize());
+  app.use(passport.session());
 
-// Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+  //Use flash messages for errors, info, ect...
+  app.use(flash());
 
-//Use flash messages for errors, info, ect...
-app.use(flash());
-
-//Setup Routes For Which The Server Is Listening
-app.use("/", mainRoutes);
-app.use("/post", postRoutes);
-app.use("/comment", commentRoutes);
-app.use('/todos', todoRoutes)
+  //Setup Routes For Which The Server Is Listening
+  app.use("/", mainRoutes);
+  app.use("/post", postRoutes);
+  app.use("/comment", commentRoutes);
+  app.use('/todos', todoRoutes)
 
 
-//Server Running
-app.listen(process.env.PORT, () => {
-  console.log("Server is running, you better catch it!");
-});
+  //Server Running
+  app.listen(process.env.PORT, () => {
+    console.log("Server is running, you better catch it!");
+  });
+})
